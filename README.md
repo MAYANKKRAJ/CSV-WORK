@@ -1,55 +1,78 @@
-# GreenDeck Java Sync Csv Assignment (Appraoches I have Follwed)
-# Project Setup (using Spring initializr)
-Step1: Springboot project setup/configuration
-Step2: Place the Csv File at speific location and copy its path and configure the path in Properties file.
-Step3: Make an Entity/Model and make the respective getters & Setters and Constructor as well for future requirement for initializing value.
-Step4: Make Dao and implement JpaRepository
-Step5: Make a  Service Class i.e "CsvService.java" with @Service annotations for writing the business logic here
-Step6: Make a RestController i.e "CsvController.java" class with required Handler method.
+# GreenDeck Java Sync Csv Assignment 
+# Clone the Project, and follow the below Steps for execution
+# Make changes in Your Prpoerties file for DB configuration 
+#    • Cahnge MysQL Credentials in properties file for your local Mysql  
+#    • You have to make DB manually in your Mysql,You can change DB name otherwise leave it as same ie: "csvrecords"
+	
+  ![PropertiesFile](https://user-images.githubusercontent.com/44177120/171572972-2c809ab5-4c7d-46af-a627-8fec5c3022b6.PNG)
+  
 
-# For reading Csv and insertingn in DB
-Step6: Make handler i.e readCsvFile() with end points localhost:8080/v1/csv/read-csv (This will read Csv and populate the Csv data in Mysql table).
-Step7: Write business logic in Service class inside readCsvFile() for handling the Csv parsing and insertion request.
+# Place the CSV file at some location and configure the file path in Properties File.
+#    • above imgage for reference
+      file_path= C:\\Users\\CODER\\Downloads\\Assignment Sheet.csv 
 
-# For checking if Csv has any new records or not, if found then update the DB as Same
-Step8: Make handler i.e addRowToCsv() with end points localhost:8080/v1/csv//add-records-to-csv (This will If any new records inserted in Csv, if found then it will update the same record in DB as well).
-Step9: Make the addRowToCsv() in CsvService class to fulfill the updation request if new records found.
+#  • Make handler i.e readCsvFile() with  (This will read Csv and populate the Csv data in Mysql table). And make the business logic as well in Service class.
+         localhost:8080/v1/csv/read-csv
+	
+![GetCtrl](https://user-images.githubusercontent.com/44177120/171576926-e41fa9cd-5826-41de-9e02-64db32da29f0.PNG)
+		
+		   define the business logic for same handler in Service
+		
+![ReadCsvService](https://user-images.githubusercontent.com/44177120/171578228-1056a377-ea6f-4f25-a305-1afb7e3a8792.PNG)
 
-# For checking Deleting the CSV records only .
-Step10: Make a removeRowFromCsv() in CsvController to handle the end point  localhost:8080/v1/csv/remove/{row} which will delete the CSV record of particular id.
-Step11: Make a removeRecodsFromCSV() in CsvService to provide the business logic for deleting csv records. 
+# now run the application and wait for output 
+#      • It will auto trigger the localhost:8080/v1/csv/read-csv (because of Schedular) and it will read CSV and upadte the same data in Database.
+			
+		//Initially CSV has only 20 records
+![Excel1](https://user-images.githubusercontent.com/44177120/171579691-40ff7209-d812-48a7-ac3a-c13406ef69e7.PNG)
 
-# Schedular Steps :  
-Step12:  Make the schedular class i.e "ScheduledTask.java" and write scheduleFixedDelayTask() method for assigning the Task need to be scheduled. Make sure to annotate            the method with @Scheduled(fixedDelay = 3*1000) 
-Step14:  Assign the task in scheduleFixedDelayTask() to 
-Step13:  annotate CsvController class with @EnableScheduling so that Schedular can be exceute on respective endpoints.
-# If you want to schedule it in every 2min then change the fixedDelay value as @Scheduled(fixedDelay = 2*60*1000)
+// DB has also Same number of Records
+![db_initialRecords](https://user-images.githubusercontent.com/44177120/171580061-ff337388-ba1d-4992-ae1f-c0eafa23a038.PNG)
 
 
-# Configure the Properties file for Mysql Connectivity and and Hibernate 
+# Now Insert Records to CSV and check if Csv has any new records or not, if found then update the DB as Same
+     localhost:8080/v1/csv//add-records-to-csv
+![updatedPostman](https://user-images.githubusercontent.com/44177120/171581207-61c8af8e-e715-4583-9370-74f29a30240a.PNG)
 
-# Now Test the endpoints on postman
- # 1 Read Csv And and insert records in DB as well Initially CSV has 20 records only (for testing)
+     New rords inserted to Excel see last row no. of Excel sheet
+![Excel2](https://user-images.githubusercontent.com/44177120/171581635-e6be3c5d-4026-4314-9e3a-6e77dd127bc2.PNG)
 
-![Excel1](https://user-images.githubusercontent.com/44177120/171566126-341de9d2-7318-45d4-9049-385fe16a6f88.PNG)
+    DB also get Updated....
+![updatedDb](https://user-images.githubusercontent.com/44177120/171581770-d78ed2b5-cd2a-4bae-be8e-dd5359e6fcaf.PNG)
 
- DATABASE ALSO HAVE SAME NUMBER OF RECORDS 
- ![db_initialRecords](https://user-images.githubusercontent.com/44177120/171567590-810dd7d4-bd0e-4d83-bb94-ac6633b2e7ff.PNG)
+  GETTING PROPER LOGGER AND SCHEDULAR INFO IN CONSOLE.....
+![Console](https://user-images.githubusercontent.com/44177120/171582490-f943e23f-906f-4675-b126-9216cab2e95f.PNG)
+		
 
-# 2 for Inserting new Recods in CSV while service keeps lloking for new Records
+# If you manuaaly want to hit the endpoint for reading and populating csv in DB then : 
+         Comment the Task Assigned to schedular
+![cmntTask](https://user-images.githubusercontent.com/44177120/171584148-7bb214b4-a3f3-41df-8537-1753f5cc7f0e.PNG)
 
-![updatedPostman](https://user-images.githubusercontent.com/44177120/171566427-b657bb5f-7e5d-44ee-bb84-29948ee8aa57.PNG)
-   NEW RECORDS INSERTED TO CSV NOW 
-![Excel2](https://user-images.githubusercontent.com/44177120/171566641-5c0d896b-b8ac-4bc0-a566-e65f11f01a4b.PNG)
-DATABASE ALSO GET UPDATED NOW
-![updatedDb](https://user-images.githubusercontent.com/44177120/171566929-4456f4c1-1577-490e-9132-795d62d04669.PNG)
+       hit the end point on postman .....   localhost:8080/v1/csv/read-csv
+![withoutSchdlr](https://user-images.githubusercontent.com/44177120/171584284-0508024c-c10a-4179-99e0-421de7e56938.PNG)
+	
+	Now you can check DB has got updated with CSV file.
+	
+# If you don't want to comment the schedular task then you can call the schedular after end point is triggerd manually
+   Below code will work if you will assign the task in run() by implementing Runnable interface.
+![Runnable](https://user-images.githubusercontent.com/44177120/171585170-f07167a7-574b-4930-9f75-0ddb12428180.PNG)
 
-CONSOLE IS GETTING PROPER LOGS OF SCHEDULAR
-![Console](https://user-images.githubusercontent.com/44177120/171567084-07f52ce0-1243-494a-8054-ea522da2784b.PNG)
+
+# Delete Csv Record from java end using postman 
+    For now only Csv record is deleting, to delete in DB we need to work with Some primary key in csv and DB.
+      localhost:8080/v1/csv/remove/2               here /2 is row number
+	
+![Del](https://user-images.githubusercontent.com/44177120/171586302-5b0d3352-6175-40de-a7a7-435452b7dd6e.PNG)
+
+
+
+  
+
+ 
+
 
 # NOTES: -
-# Once we will start the project it will read the CSV and and populate the csv records in database itself.
-# Once we will execute the project the @GetMapping("/read-csv") will be triggered itself because we have used @EnableScheduling annotations.
+# Once we will start the project it will read the CSV and and populate the csv records in database itself because of Schedular.
 # Implementing Runnable Interface and @Override run() method can be another approach for task scheduling, assign the Schedule time in controller's Handler method         inside scheduledAtFixedRate(task, initailadDelay, ScheuduledDelay, Time.Minutes); using this we can prevent auto triggering the task at load on Startup.
 
 # For now only CSv records Deleting We can Manage all the Deletion, Updation and Insertion Task if we will get and Primary Key on Csv fILE.
