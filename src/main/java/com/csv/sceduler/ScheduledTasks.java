@@ -18,7 +18,7 @@ public class ScheduledTasks {
 
 	@Scheduled(fixedDelay = 3*1000)  //3*1000 = 3sec
 	public void scheduleFixedDelayTask() throws IOException {
-//		String response = csvService.readCsvFile();
-//		System.out.println(response);
+		String response = csvService.readCsvFile();
+		System.out.println(response);
 	}
 }
