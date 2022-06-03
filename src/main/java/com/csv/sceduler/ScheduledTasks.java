@@ -16,7 +16,8 @@ public class ScheduledTasks {
 	@Autowired
 	private CsvService csvService;
 
-	@Scheduled(fixedDelay = 3*1000)  //3*1000 = 3sec
+	//Registring the Task to be scheduled at fixed time
+	@Scheduled(fixedDelay = 2*60*1000)  //3*1000 = 3sec
 	public void scheduleFixedDelayTask() throws IOException {
 		String response = csvService.readCsvFile();
 		System.out.println(response);
