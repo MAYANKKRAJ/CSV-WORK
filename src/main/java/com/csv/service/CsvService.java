@@ -41,24 +41,28 @@ public class CsvService {
 
 	private static final Logger LOGGER = LogManager.getLogger(CsvService.class);
 
+	
+	//Parsing Csv files and Saving records to csvrecords table begins  here
 	@SuppressWarnings("resource")
 	public String readCsvFile() throws IOException {
 		LOGGER.debug("readCsvFile fuunction called : ");
 
-		Integer countRecordsFromDb = csvRepository.countRecordsFromDb();
-		int countRecordsFromCsv = 0;
+		
+		Integer countRecordsFromDb = csvRepository.countRecordsFromDb(); // Total no. of records in DB
+		int countRecordsFromCsv = 0;  // Initially zero records in CSV assumed.
 		LOGGER.debug("read csv file from : " + filePath);
 
 		BufferedReader fileReader = new BufferedReader(
 				new InputStreamReader(new FileInputStream(new File(filePath)), "UTF-8"));
+		//Parsing the CSV file in Sequence
 		CSVParser csvParser = new CSVParser(fileReader,
 				CSVFormat.DEFAULT.withHeader("timestamp", "ver", "product_family", "country", "device_type", "os",
 						"checkout_failure_count", "payment_api_failure_count", "purchase_count", "revenue"));
 		LOGGER.debug("reading csv file : ");
 
 		List<CsvEntity> list = new ArrayList<CsvEntity>();
-		List<CSVRecord> records = csvParser.getRecords();
-		countRecordsFromCsv = records.size();
+		List<CSVRecord> records = csvParser.getRecords();  // Storing list of objects(records) in csv 
+		countRecordsFromCsv = records.size();              // will return total no. of records in csv
 
 		if (countRecordsFromCsv <= 0) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
@@ -93,7 +97,11 @@ public class CsvService {
 		return "Record Updated successfully !!";
 
 	}
+	
+	//********Parsing Csv files and Saving records to csvrecords table Ends  here**********
 
+	
+	//  Adding Records to Csv and Check new record in Csv and Update DB with Latest records
 	public CsvEntity addRowToCsv(CsvEntity csvEntity) throws IOException {
 		BufferedReader fileReader = new BufferedReader(new InputStreamReader(new FileInputStream(new File(filePath)), "UTF-8"));
 		CSVParser parser = new CSVParser(fileReader,CSVFormat.DEFAULT.withHeader("timestamp", "ver", "product_family", "country", "device_type", "os","checkout_failure_count", "payment_api_failure_count", "purchase_count", "revenue"));
@@ -116,7 +124,9 @@ public class CsvService {
 		return csvEntity;
 
 	}
+	// ********New Records Insertion in CSV ends Here*********
 
+	// Delete Csv records using Row number
 	@SuppressWarnings("resource")
 	public String removeRecodsFromCSV(int rowNumber) throws IOException {
 		BufferedReader fileReader = new BufferedReader(new InputStreamReader(new FileInputStream(new File(filePath)), "UTF-8"));
