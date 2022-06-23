@@ -1,4 +1,4 @@
-# GreenDeck Java Sync Csv Assignment 
+# Java Sync Csv Assignment 
 # Clone the Project, and follow the below Steps for execution
 # Make changes in Your Prpoerties file for DB configuration 
 #    • Cahnge MysQL Credentials in properties file for your local Mysql  
